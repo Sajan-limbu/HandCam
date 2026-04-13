@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Limbu digital solution interactive Itahari map with webcam hand gesture controls.">
+  <meta name="theme-color" content="#07141e">
+  <title>Itahari Gesture Map</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <noscript>
+    <div style="padding:16px;background:#07141e;color:#eef6ff;font-family:Arial,sans-serif;">
+      JavaScript is required to run the Limbu Itahari map viewer.
+    </div>
+  </noscript>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand-block">
+        <div class="brand-mark">
+          <img src="logo.png" alt="Limbu logo" class="logo-image">
+          <div>
+            <p class="logo-name">Limbu</p>
+            <p class="logo-tag">Digital solution</p>
+          </div>
+        </div>
+        <p class="eyebrow">OpenStreetMap + deck.gl</p>
+        <h1>Itahari hand gesture map</h1>
+        <p class="subtitle">
+          A focused 3D map viewer for Itahari, Nepal using OpenStreetMap tiles and deck.gl
+          rendering, with hand-controlled orbit and zoom.
+        </p>
+        <div class="hero-notes">
+          <div class="hero-note">
+            <strong>Two-hand zoom</strong>
+            <span>Bring both hands closer to zoom in, move them apart to zoom out.</span>
+          </div>
+          <div class="hero-note">
+            <strong>Point to rotate</strong>
+            <span>Raise one index finger to steer the map heading and tilt naturally.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="setup-card">
+        <label class="input-label">Map mode</label>
+        <p class="microcopy">
+          The map is locked to Itahari, Nepal. OpenStreetMap tiles are rendered through deck.gl,
+          with focused gesture-driven camera control for a clean deployable experience.
+        </p>
+        <div class="button-row">
+          <button id="loadMapButton" class="primary-button" type="button">Load Itahari map</button>
+          <button id="startCameraButton" class="secondary-button" type="button">Start webcam</button>
+          <button id="recenterButton" class="ghost-button" type="button">Recenter</button>
+        </div>
+        <div class="deploy-note">
+          <strong>Deploy-ready static app</strong>
+          <span>Host these files on Netlify, Vercel static hosting, GitHub Pages, or any simple web server.</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="map-stage">
+      <section class="workspace-grid">
+        <div class="map-column">
+          <section class="map-card">
+            <div id="mapRoot" class="map-root" aria-label="OpenStreetMap deck.gl view centered on Itahari, Nepal"></div>
+
+            <div class="hud hud-left">
+              <div class="hud-pill">
+                <span>Map</span>
+                <strong id="mapStatus">Waiting to load</strong>
+              </div>
+              <div class="hud-pill">
+                <span>Gesture</span>
+                <strong id="gestureStatus">Camera inactive</strong>
+              </div>
+              <div class="hud-pill">
+                <span>Camera</span>
+                <strong id="cameraStatus">Not started</strong>
+              </div>
+            </div>
+
+            <div class="hud hud-right">
+              <div class="metric-card">
+                <span>Heading</span>
+                <strong id="headingValue">20deg</strong>
+              </div>
+              <div class="metric-card">
+                <span>Tilt</span>
+                <strong id="tiltValue">65deg</strong>
+              </div>
+              <div class="metric-card">
+                <span>Range</span>
+                <strong id="zoomValue">2500m</strong>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <aside class="camera-panel">
+          <div class="camera-head">
+            <div>
+              <p class="panel-title">Live hand tracking</p>
+              <p class="panel-copy">Landmarks are mirrored and anchored to your hand correctly.</p>
+            </div>
+            <span class="status-dot" id="cameraDot"></span>
+          </div>
+
+          <div class="camera-actions">
+            <button id="toggleCameraButton" class="secondary-button" type="button">Camera on</button>
+          </div>
+
+          <div class="camera-stack">
+            <video id="webcam" autoplay playsinline muted></video>
+            <canvas id="gestureCanvas" width="320" height="240"></canvas>
+          </div>
+
+          <ul class="gesture-guide">
+            <li><span>One index finger</span><span>Rotate and tilt map</span></li>
+            <li><span>Two hands</span><span>Distance-based zoom</span></li>
+            <li><span>Index + middle finger</span><span>Move map</span></li>
+            <li><span>Mouse drag</span><span>Native map controls</span></li>
+          </ul>
+        </aside>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://unpkg.com/deck.gl@9.0.33/dist.min.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
